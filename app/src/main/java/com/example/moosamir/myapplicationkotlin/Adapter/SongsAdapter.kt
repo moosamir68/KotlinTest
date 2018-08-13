@@ -1,16 +1,12 @@
 package com.example.moosamir.myapplicationkotlin.Adapter
 
-
-import android.app.Activity
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
-import com.example.moosamir.myapplicationkotlin.MainActivity
 import com.example.moosamir.myapplicationkotlin.Model.Song
 import com.example.moosamir.myapplicationkotlin.R
 import kotlinx.android.synthetic.main.load_more_list_cell.view.*
