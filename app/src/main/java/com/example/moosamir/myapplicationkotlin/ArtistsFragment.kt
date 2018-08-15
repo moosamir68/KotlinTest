@@ -11,7 +11,9 @@ import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.ArtistsAdapter
 import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
+import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
 import com.example.moosamir.myapplicationkotlin.Model.Artist
+import com.example.moosamir.myapplicationkotlin.ViewModel.ArtistsViewModel
 import com.google.gson.GsonBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -20,22 +22,24 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ArtistsFragment : Fragment(), MLoadMore {
+class ArtistsFragment : Fragment(), MLoadMore, ViewModelDelegate {
 
-    var artists:MutableList<Artist?> = ArrayList<Artist?>()
-    var loadDefault = false
     var adapter:ArtistsAdapter? = null
+    val viewModel:ArtistsViewModel
+
+    init {
+        this.viewModel = ArtistsViewModel(this)
+        this.viewModel.random10Data()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_artist, container, false)
-
-        this.random10Data()
 
         var recyclerView = rootView.recycle_view as RecyclerView
         val linearLayoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = linearLayoutManager
 
-        adapter = ArtistsAdapter(recyclerView, activity, artists)
+        adapter = ArtistsAdapter(recyclerView, activity, this.viewModel.artists)
         recyclerView.adapter = adapter
 
         adapter!!.setLoadMore(this)
@@ -48,51 +52,26 @@ class ArtistsFragment : Fragment(), MLoadMore {
         fun newInstance(): ArtistsFragment = ArtistsFragment()
     }
 
-    //generate 10 artist with random
-    fun random10Data(){
-        if(!this.loadDefault) {
-            this.loadDefault = true
-            for (i in 0..9) {
-                var name = "Artist test" + i.toString()
-                var family = "Artitst family test" + i.toString()
-                var artist = Artist(name, family)
-                artists.add(artist)
-            }
+    //load more delegate
+    override fun onLoadMore() {
+        if(this.viewModel.artists.size < 50){
+            this.viewModel.artists!!.add(null)
+            adapter!!.notifyItemInserted(this.viewModel.artists.size - 1)
+            this.viewModel.getArtists()
+        }else{
+            Toast.makeText(activity,"Max Artists loaded", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onLoadMore() {
-        if(artists.size < 50){
-            artists!!.add(null)
-            adapter!!.notifyItemInserted(artists.size - 1)
+    override fun sucessGetData() {
+        this.adapter!!.notifyDataSetChanged()
+        this.adapter!!.setLoaded()
+    }
 
-            val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .baseUrl("http://www.mocky.io/v2/5b7400dc3500006600531d6a/").build()
-
-            val postsApi = retrofit.create(INTNetworkApi::class.java)
-
-            val response = postsApi.getArtists()
-
-            response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            {
-                                if (it != null) {
-                                    this.artists.removeAt(artists.size - 1)
-                                    this.adapter!!.notifyItemRemoved(artists.size)
-                                    this.artists.addAll(it)
-                                    this.adapter!!.notifyDataSetChanged()
-                                    this.adapter!!.setLoaded()
-                                }
-                            },{
-                        Toast.makeText(activity,it.toString(), Toast.LENGTH_LONG).show()
-                        println("error get songs")
-                        println(it.toString())
-                    }
-                    )
-
-        }else{
-            Toast.makeText(activity,"Max songs loaded", Toast.LENGTH_SHORT).show()
-        }
+    override fun faildGetData() {
+        Toast.makeText(activity,this.viewModel.errorDescription, Toast.LENGTH_LONG).show()
+        println("error get songs")
+        this.adapter!!.notifyItemRemoved(this.viewModel.artists.size)
+        this.adapter!!.setLoaded()
     }
 }
