@@ -9,11 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.ArtistsAdapter
-import com.example.moosamir.myapplicationkotlin.Adapter.SongsAdapter
+import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Model.Artist
-import com.example.moosamir.myapplicationkotlin.Model.Song
+import com.google.gson.GsonBuilder
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_songs.view.*
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ArtistsFragment : Fragment(), MLoadMore {
 
@@ -61,25 +66,30 @@ class ArtistsFragment : Fragment(), MLoadMore {
             artists!!.add(null)
             adapter!!.notifyItemInserted(artists.size - 1)
 
-            Handler().postDelayed({
-                artists.removeAt(artists.size - 1)
-                adapter!!.notifyItemRemoved(artists.size)
+            val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .baseUrl("http://www.mocky.io/v2/5b7400dc3500006600531d6a/").build()
 
-                var index = artists.size
-                var end = index + 10
+            val postsApi = retrofit.create(INTNetworkApi::class.java)
 
-                for (i in index until end){
-                    val name = "Artist Load more name Test" + i.toString()
-                    var family = "Artist Load more family test" + i.toString()
+            val response = postsApi.getArtists()
 
-                    val artist = Artist(name, family)
-                    artists.add(artist)
-                }
-
-                adapter!!.notifyDataSetChanged()
-                adapter!!.setLoaded()
-            }, 3000)
-
+            response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+                                if (it != null) {
+                                    this.artists.removeAt(artists.size - 1)
+                                    this.adapter!!.notifyItemRemoved(artists.size)
+                                    this.artists.addAll(it)
+                                    this.adapter!!.notifyDataSetChanged()
+                                    this.adapter!!.setLoaded()
+                                }
+                            },{
+                        Toast.makeText(activity,it.toString(), Toast.LENGTH_LONG).show()
+                        println("error get songs")
+                        println(it.toString())
+                    }
+                    )
 
         }else{
             Toast.makeText(activity,"Max songs loaded", Toast.LENGTH_SHORT).show()

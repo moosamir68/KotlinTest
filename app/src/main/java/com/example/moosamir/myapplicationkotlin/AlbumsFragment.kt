@@ -9,9 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.AlbumsAdapter
+import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Model.Album
+import com.google.gson.GsonBuilder
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_songs.view.*
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 class AlbumsFragment : Fragment(), MLoadMore {
 
@@ -59,25 +66,30 @@ class AlbumsFragment : Fragment(), MLoadMore {
             albums!!.add(null)
             adapter!!.notifyItemInserted(albums.size - 1)
 
-            Handler().postDelayed({
-                albums.removeAt(albums.size - 1)
-                adapter!!.notifyItemRemoved(albums.size)
+            val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .baseUrl("http://www.mocky.io/v2/5b7400933500006600531d64/").build()
 
-                var index = albums.size
-                var end = index + 10
+            val postsApi = retrofit.create(INTNetworkApi::class.java)
 
-                for (i in index until end){
-                    val name = "Album Load more name Test" + i.toString()
-                    var artist = "Album Load more artist test" + i.toString()
+            val response = postsApi.getAlbums()
 
-                    val album = Album(name, artist)
-                    albums.add(album)
-                }
-
-                adapter!!.notifyDataSetChanged()
-                adapter!!.setLoaded()
-            }, 3000)
-
+            response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+                                if (it != null) {
+                                    this.albums.removeAt(albums.size - 1)
+                                    this.adapter!!.notifyItemRemoved(albums.size)
+                                    this.albums.addAll(it)
+                                    this.adapter!!.notifyDataSetChanged()
+                                    this.adapter!!.setLoaded()
+                                }
+                            },{
+                        Toast.makeText(activity,it.toString(), Toast.LENGTH_LONG).show()
+                        println("error get songs")
+                        println(it.toString())
+                    }
+                    )
 
         }else{
             Toast.makeText(activity,"Max songs loaded", Toast.LENGTH_SHORT).show()
