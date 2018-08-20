@@ -75,14 +75,11 @@ class MMRequest(val delegate:ViewModelGetDataDelegate) {
                 if(connection.responseCode == currectResponseCode){
                     response = MMResponse(connection, text)
                 }else{
-                    error = MMError(null, connection)
+                    error = MMError(null, connection, null)
                 }
             }catch (e: Exception) {
                 e.printStackTrace()
-                error = MMError(e, null)
-            }catch (e: IOException) {
-                e.printStackTrace()
-                error = MMError(e, null)
+                error = MMError(e, null, null)
             }finally {
                 connection.disconnect()
                 return ""

@@ -3,14 +3,14 @@ package com.example.moosamir.myapplicationkotlin.ViewModel
 import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
 import com.example.moosamir.myapplicationkotlin.Model.Album
-import com.example.moosamir.myapplicationkotlin.Model.Song
+import com.example.moosamir.myapplicationkotlin.Service.MMError
 import com.google.gson.GsonBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
-//import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Observer
 
 public class AlbumsViewModel(val delegate: ViewModelDelegate) {
     var albums:MutableList<Album?> = ArrayList<Album?>()
@@ -25,17 +25,18 @@ public class AlbumsViewModel(val delegate: ViewModelDelegate) {
 
         val response = postsApi.getAlbums()
 
+        response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {
                     this.albums.removeAt(albums.size - 1)
                     this.albums.addAll(it)
                     this.delegate.sucessGetData()
-                }, {
-
-            this.albums.removeAt(albums.size - 1)
-            this.errorDescription = it.toString()
-            this.delegate.faildGetData()
-        }
+                },
+                {
+                    this.albums.removeAt(albums.size - 1)
+                    this.errorDescription = MMError(null, null, it).errorDescription
+                    this.delegate.faildGetData()
+                }
         )
     }
 

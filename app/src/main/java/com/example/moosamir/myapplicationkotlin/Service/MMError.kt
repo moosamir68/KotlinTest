@@ -7,19 +7,36 @@ import java.net.HttpURLConnection
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
-class MMError(e:Exception?, conection:HttpURLConnection?) {
+class MMError(e:Exception?, conection:HttpURLConnection?, throwable: Throwable?) {
     var errorDescription:String = ""
     var errorCode:Int = 200
 
     init {
         if (conection != null) {
-            errorDescription = getDescriptionFromStatusCode(conection)
+            errorDescription = getDescriptionFromResponse(conection!!)
         }else if(e != null){
-            errorDescription = getDescriptionFromStatusCode(e!!)
+            errorDescription = getDescriptionFromErrorExeption(e!!)
+        }else if(throwable != null){
+            errorDescription = getDescriptionFromThrowable(throwable!!)
         }
     }
 
-    fun getDescriptionFromStatusCode(error:Exception):String{
+    fun getDescriptionFromThrowable(error:Throwable):String{
+        if(error is UnknownHostException){
+            return "can not connect to server"
+        }else if(error is ConnectException){
+            return "can not connect to internet"
+        }else if(error is TimeoutException){
+            return "request time out"
+        }else if(error is HttpException){
+            val errorDescription = getDescriptionFromStatusCode(error.code())
+            return errorDescription
+        }else{
+            return "can not connect to server"
+        }
+    }
+
+    fun getDescriptionFromErrorExeption(error:Exception):String{
 
         if(error is UnknownHostException){
             return "can not connect to server"
@@ -27,13 +44,20 @@ class MMError(e:Exception?, conection:HttpURLConnection?) {
             return "can not connect to internet"
         }else if(error is TimeoutException){
             return "request time out"
+        }else if(error is HttpException){
+            val errorDescription = getDescriptionFromStatusCode(error.code())
+            return errorDescription
         }else{
             return "can not connect to server"
         }
     }
 
-    fun getDescriptionFromStatusCode(response:HttpURLConnection):String{
+    fun getDescriptionFromResponse(response:HttpURLConnection):String{
         val responseCode:Int = response!!.responseCode
+        return getDescriptionFromStatusCode(responseCode)
+    }
+
+    fun getDescriptionFromStatusCode(responseCode:Int):String{
 
         if(responseCode >=100 && responseCode < 200){
             return getDescriptionErrorRange100(responseCode)
