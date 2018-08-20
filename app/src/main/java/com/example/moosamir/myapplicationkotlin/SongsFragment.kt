@@ -9,18 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.SongsAdapter
-import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
-import com.example.moosamir.myapplicationkotlin.Model.Song
 import com.example.moosamir.myapplicationkotlin.ViewModel.SongsViewModel
-import com.google.gson.GsonBuilder
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_songs.view.*
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class SongsFragment : Fragment(), MLoadMore, ViewModelDelegate {
 
@@ -72,9 +65,9 @@ class SongsFragment : Fragment(), MLoadMore, ViewModelDelegate {
     }
 
     override fun faildGetData() {
-        Toast.makeText(activity,this.viewModel.errorDescription, Toast.LENGTH_LONG).show()
-        println("error get songs")
-        this.adapter!!.notifyItemRemoved(this.viewModel.songs.size)
-        this.adapter!!.setLoaded()
+            Toast.makeText(activity,this.viewModel.errorDescription, Toast.LENGTH_LONG).show()
+            println("error get songs")
+            this.adapter!!.notifyItemRemoved(this.viewModel.songs.size)
+            this.adapter!!.setLoaded()
     }
 }

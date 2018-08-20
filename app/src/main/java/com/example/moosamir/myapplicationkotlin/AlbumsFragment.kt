@@ -1,7 +1,5 @@
 package com.example.moosamir.myapplicationkotlin
-import android.arch.lifecycle.ViewModel
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,18 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.AlbumsAdapter
-import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
-import com.example.moosamir.myapplicationkotlin.Model.Album
 import com.example.moosamir.myapplicationkotlin.ViewModel.AlbumsViewModel
-import com.google.gson.GsonBuilder
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_songs.view.*
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 
 class AlbumsFragment : Fragment(), MLoadMore, ViewModelDelegate {
 
@@ -60,7 +50,7 @@ class AlbumsFragment : Fragment(), MLoadMore, ViewModelDelegate {
             adapter!!.notifyItemInserted(this.viewModel.albums.size - 1)
             this.viewModel.getAlbums()
         }else{
-            Toast.makeText(activity,"Max songs loaded", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity,"Max Album loaded", Toast.LENGTH_SHORT).show()
         }
     }
 

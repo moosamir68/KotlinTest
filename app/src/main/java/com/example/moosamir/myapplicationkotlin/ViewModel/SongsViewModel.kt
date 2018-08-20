@@ -1,40 +1,29 @@
 package com.example.moosamir.myapplicationkotlin.ViewModel
 
-import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
+import com.example.moosamir.myapplicationkotlin.Interface.ViewModelGetDataDelegate
 import com.example.moosamir.myapplicationkotlin.Model.Song
-import com.google.gson.GsonBuilder
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.moosamir.myapplicationkotlin.Service.HttpManager
+import com.example.moosamir.myapplicationkotlin.Service.MMError
+import com.example.moosamir.myapplicationkotlin.Service.MMResponse
+import com.google.gson.Gson
+import org.json.JSONArray
+import java.util.*
 
-public class SongsViewModel(val delegate:ViewModelDelegate) {
+public class SongsViewModel(val delegate:ViewModelDelegate):ViewModelGetDataDelegate {
     var songs:MutableList<Song?> = ArrayList<Song?>()
     var errorDescription:String = ""
 
     fun getSongs(){
-        val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://www.mocky.io/v2/5b73e33b3500009d01531ccc/").build()
 
-        val postsApi = retrofit.create(INTNetworkApi::class.java)
-
-        val response = postsApi.getSongs()
-
-        response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                {
-                    this.songs.removeAt(songs.size - 1)
-                    this.songs.addAll(it)
-                    this.delegate.sucessGetData()
-                }, {
-
-            this.songs.removeAt(songs.size - 1)
-            this.errorDescription = it.toString()
-            this.delegate.faildGetData()
-        }
-        )
+        val request = HttpManager.instance.createApiRequestWithToken("", this)
+        request.setMethod("GET")
+        request.setProtocol("http")
+        request.setBaseUrl("www.mocky.io")
+        request.appendPathParameter("v2")
+        request.appendPathParameter("5b781a912e00001200864c16")
+        request.setCorrectResponseCode(200)
+        request.send()
     }
 
     fun random10Data(){
@@ -44,5 +33,32 @@ public class SongsViewModel(val delegate:ViewModelDelegate) {
             var song = Song(name, artist)
             songs.add(song)
         }
+    }
+
+    //result data
+    override fun sucessGetResponse(response: MMResponse) {
+
+        val jsonArray = JSONArray(response.content)
+        val list = ArrayList<Song>()
+
+        var x = 0
+        while (x < jsonArray.length()){
+            val jsonString = jsonArray.getString(x)
+            val song = Gson().fromJson(jsonString, Song::class.java)
+            list.add(song)
+
+            x++
+        }
+
+        this.songs.removeAt(songs.size - 1)
+        this.songs.addAll(list)
+        this.delegate.sucessGetData()
+    }
+
+
+    override fun faildGetResponse(error:MMError) {
+        this.songs.removeAt(songs.size - 1)
+        this.errorDescription = error.errorDescription
+        this.delegate.faildGetData()
     }
 }
