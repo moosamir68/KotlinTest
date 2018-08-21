@@ -1,13 +1,15 @@
 package com.example.moosamir.myapplicationkotlin.Service
 
 import android.widget.Switch
+import okhttp3.ResponseBody
 import retrofit2.HttpException
+import retrofit2.Response
 import java.net.ConnectException
 import java.net.HttpURLConnection
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
-class MMError(e:Exception?, conection:HttpURLConnection?, throwable: Throwable?) {
+class MMError<T>(e:Exception?, conection:HttpURLConnection?, throwable: Throwable?, responseBody:Response<T>?) {
     var errorDescription:String = ""
     var errorCode:Int = 200
 
@@ -18,7 +20,18 @@ class MMError(e:Exception?, conection:HttpURLConnection?, throwable: Throwable?)
             errorDescription = getDescriptionFromErrorExeption(e!!)
         }else if(throwable != null){
             errorDescription = getDescriptionFromThrowable(throwable!!)
+        }else if(responseBody != null){
+            errorDescription = getDescriptionFromResponseBody(responseBody)
         }
+    }
+
+    fun getDescriptionFromResponseBody(error:Response<T>):String{
+        var errorDescriptionLocal = this.getErrorFromDetails(error)
+        if(errorDescriptionLocal == null){
+            errorDescriptionLocal = getDescriptionFromStatusCode(error.code())
+        }
+
+        return errorDescriptionLocal
     }
 
     fun getDescriptionFromThrowable(error:Throwable):String{
@@ -146,6 +159,14 @@ class MMError(e:Exception?, conection:HttpURLConnection?, throwable: Throwable?)
             505 -> return "HTTP Version Not Supported"
 
             else -> return "Internal Server Error"
+        }
+    }
+
+    private fun getErrorFromDetails(response:Response<T>):String?{
+        if(response.errorBody() == null){
+            return null
+        }else{
+            return null
         }
     }
 }

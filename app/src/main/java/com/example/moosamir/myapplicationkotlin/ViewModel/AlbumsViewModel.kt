@@ -10,7 +10,6 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.Observer
 
 public class AlbumsViewModel(val delegate: ViewModelDelegate) {
     var albums:MutableList<Album?> = ArrayList<Album?>()
@@ -25,7 +24,6 @@ public class AlbumsViewModel(val delegate: ViewModelDelegate) {
 
         val response = postsApi.getAlbums()
 
-        response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         response.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {
                     this.albums.removeAt(albums.size - 1)
@@ -34,7 +32,7 @@ public class AlbumsViewModel(val delegate: ViewModelDelegate) {
                 },
                 {
                     this.albums.removeAt(albums.size - 1)
-                    this.errorDescription = MMError(null, null, it).errorDescription
+                    this.errorDescription = MMError<Album>(null, null, it, null).errorDescription
                     this.delegate.faildGetData()
                 }
         )

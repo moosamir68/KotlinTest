@@ -1,21 +1,13 @@
 package com.example.moosamir.myapplicationkotlin.ViewModel
 
-import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelGetDataDelegate
 import com.example.moosamir.myapplicationkotlin.Model.Artist
-import com.example.moosamir.myapplicationkotlin.Model.Song
 import com.example.moosamir.myapplicationkotlin.Service.HttpManager
 import com.example.moosamir.myapplicationkotlin.Service.MMError
 import com.example.moosamir.myapplicationkotlin.Service.MMResponse
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-//import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 
 public class ArtistsViewModel(val delegate: ViewModelDelegate):ViewModelGetDataDelegate {
     var artists:MutableList<Artist?> = ArrayList<Artist?>()
@@ -61,7 +53,7 @@ public class ArtistsViewModel(val delegate: ViewModelDelegate):ViewModelGetDataD
         this.delegate.sucessGetData()
     }
 
-    override fun faildGetResponse(error: MMError) {
+    override fun faildGetResponse(error: MMError<Any>) {
         this.artists.removeAt(artists.size - 1)
         this.errorDescription = error.errorDescription
         this.delegate.faildGetData()

@@ -8,5 +8,5 @@ import org.json.JSONArray
 interface ViewModelGetDataDelegate {
 
     fun sucessGetResponse(response:MMResponse)
-    fun faildGetResponse(error:MMError)
+    fun faildGetResponse(error:MMError<Any>)
 }

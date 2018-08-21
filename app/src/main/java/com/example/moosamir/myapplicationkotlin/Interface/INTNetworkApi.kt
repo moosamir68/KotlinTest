@@ -1,11 +1,13 @@
 package com.example.moosamir.myapplicationkotlin.Interface
 
+import com.example.moosamir.myapplicationkotlin.Model.UserAccount
 import com.example.moosamir.myapplicationkotlin.Model.Album
 import com.example.moosamir.myapplicationkotlin.Model.Artist
 import com.example.moosamir.myapplicationkotlin.Model.Song
-import retrofit2.http.GET
 import java.util.*
 import io.reactivex.Observable
+import retrofit2.http.*
+import retrofit2.Call
 
 interface INTNetworkApi {
 
@@ -22,4 +24,8 @@ interface INTNetworkApi {
 
     @GET("Songs")
     fun getDataWithArray() : List<Any>
+
+    @POST("users/app_login/")
+    @FormUrlEncoded
+    fun login(@Field("username") username:String, @Field("password") password:String) : Call<UserAccount>
 }

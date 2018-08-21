@@ -16,7 +16,7 @@ class MMRequest(val delegate:ViewModelGetDataDelegate) {
     private var protocol:String = ""
     private var pathParams:MutableList<String> = mutableListOf<String>()
     private var queryParams:MutableMap<String, String> = mutableMapOf<String, String>()
-    private var error:MMError? = null
+    private var error:MMError<Any>? = null
     private var response:MMResponse? = null
     private var requestMethod:String = "GET"
     private var currectResponseCode:Int = 200
@@ -75,11 +75,11 @@ class MMRequest(val delegate:ViewModelGetDataDelegate) {
                 if(connection.responseCode == currectResponseCode){
                     response = MMResponse(connection, text)
                 }else{
-                    error = MMError(null, connection, null)
+                    error = MMError<Any>(null, connection, null, null)
                 }
             }catch (e: Exception) {
                 e.printStackTrace()
-                error = MMError(e, null, null)
+                error = MMError<Any>(e, null, null, null)
             }finally {
                 connection.disconnect()
                 return ""

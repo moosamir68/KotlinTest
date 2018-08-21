@@ -3,10 +3,17 @@ package com.example.moosamir.myapplicationkotlin
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
+import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModel
+import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModelDelegate
 import kotlinx.android.synthetic.main.activity_login.*
+import org.w3c.dom.Text
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
+
+    val viewModel = LoginViewModel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,16 +30,42 @@ class LoginActivity : AppCompatActivity() {
         this.registerButton.setOnClickListener {
             this.userDidTapOnRegisterButton()
         }
+
+        this.username.addTextChangedListener(object :TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.setUsername(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                print("before text change")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                print("on text change")
+            }
+        })
+
+        this.password.addTextChangedListener(object :TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.setPassword(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                print("before text change")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                print("on text change")
+            }
+        })
     }
 
     private fun userDidTapOnLoginButton(){
-        val result = this.checkValidateData()
+        val result = this.viewModel.checkValidateData()
         val validate = result.first
         val errorTitle = result.second
         if(validate){
-            //show next page
-            val main = Intent(this, MainActivity::class.java)
-            startActivity(main)
+            this.viewModel.login()
             return
         }
 
@@ -40,22 +73,23 @@ class LoginActivity : AppCompatActivity() {
         return
     }
 
+    private fun changeValueUsernameEditText(){
+
+    }
     private fun userDidTapOnRegisterButton(){
         //show register page form login controller
         val register = Intent(this, RegisterActivity::class.java)
         startActivity(register)
     }
 
-    private fun checkValidateData():Pair<Boolean, String?>{
-        val userName = this.username.text.toString()
-        val passwrod = this.password.text.toString()
+    //login view model delegate
+    override fun sucessLogin() {
+        //show next page
+        val main = Intent(this, MainActivity::class.java)
+        startActivity(main)
+    }
 
-        if(userName == ""){
-            return  Pair(false, "Please enter username")
-        }else if(passwrod == ""){
-            return  Pair(false, "Please enter password")
-        }
-
-        return  Pair(true, null)
+    override fun faildLogin() {
+        Toast.makeText(this@LoginActivity, this.viewModel.erroDescription, Toast.LENGTH_SHORT).show()
     }
 }

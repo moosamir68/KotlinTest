@@ -56,7 +56,7 @@ public class SongsViewModel(val delegate:ViewModelDelegate):ViewModelGetDataDele
     }
 
 
-    override fun faildGetResponse(error:MMError) {
+    override fun faildGetResponse(error:MMError<Any>) {
         this.songs.removeAt(songs.size - 1)
         this.errorDescription = error.errorDescription
         this.delegate.faildGetData()
