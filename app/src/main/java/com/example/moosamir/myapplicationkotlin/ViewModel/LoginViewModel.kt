@@ -49,8 +49,9 @@ public class LoginViewModel(delegate: LoginViewModelDelegate):APIClientDelegate 
         val apiClient = APIClient.getInstance()
         val loginApi = apiClient.retrofit.create(INTNetworkApi::class.java)
         val request = loginApi.login(userNameL!!, passwordL!!)
+        this.delegate.sucessLogin()
 
-        apiClient.sendCall<UserAccount>(request, this)
+//        apiClient.sendCall<UserAccount>(request, this)
     }
 
     //API Client delegate

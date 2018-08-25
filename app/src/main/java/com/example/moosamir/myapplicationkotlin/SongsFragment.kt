@@ -1,5 +1,6 @@
 package com.example.moosamir.myapplicationkotlin
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,13 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.SongsAdapter
+import com.example.moosamir.myapplicationkotlin.Adapter.SongsViewHolderDelegate
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
+import com.example.moosamir.myapplicationkotlin.Model.Song
 import com.example.moosamir.myapplicationkotlin.ViewModel.SongsViewModel
 import kotlinx.android.synthetic.main.fragment_songs.view.*
 
 
-class SongsFragment : Fragment(), MLoadMore, ViewModelDelegate {
+class SongsFragment : Fragment(), MLoadMore, ViewModelDelegate, SongsViewHolderDelegate {
 
     var adapter:SongsAdapter? = null
     var viewModel:SongsViewModel
@@ -35,7 +38,7 @@ class SongsFragment : Fragment(), MLoadMore, ViewModelDelegate {
         var linearLayoutManager = LinearLayoutManager(activity)
         recyclerview.layoutManager = linearLayoutManager
 
-        adapter = SongsAdapter(recyclerview, activity, this.viewModel.songs)
+        adapter = SongsAdapter(recyclerview, activity, this.viewModel.songs, this)
         recyclerview.adapter = adapter
 
         adapter!!.setLoadMore(this)
@@ -69,5 +72,12 @@ class SongsFragment : Fragment(), MLoadMore, ViewModelDelegate {
             println("error get songs")
             this.adapter!!.notifyItemRemoved(this.viewModel.songs.size)
             this.adapter!!.setLoaded()
+    }
+
+    //MARK:- SongsView holder delegate
+    override fun userSelectSong(song:Song) {
+        val songIntent = Intent(activity, SongActivity::class.java)
+        songIntent.putExtra("SONG", song)
+        startActivity(songIntent)
     }
 }

@@ -12,15 +12,35 @@ import com.example.moosamir.myapplicationkotlin.R
 import kotlinx.android.synthetic.main.load_more_list_cell.view.*
 import kotlinx.android.synthetic.main.song_item_view.view.*
 
+interface SongsViewHolderDelegate{
+    fun userSelectSong(song:Song)
+}
+
 internal class LoadingViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){
     var progressBar = itemView.progress_bar
 }
 
-internal class SongViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
+internal class SongViewHolder(itemView: View, val delegateP:SongsViewHolderDelegate):RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    var delegate:SongsViewHolderDelegate
     var songNameText = itemView.song_name_textview
+    var song:Song? = null
+
+    init {
+        this.delegate = delegateP
+        this.songNameText.setOnClickListener(this)
+        itemView.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        if(v!!.id == songNameText.id){
+
+        }else if(v!!.id == itemView.id){
+            this.delegate.userSelectSong(this.song!!)
+        }
+    }
 }
 
-class SongsAdapter(recyclerView:RecyclerView, activity: FragmentActivity?, var songs:MutableList<Song?>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class SongsAdapter(recyclerView:RecyclerView, activity: FragmentActivity?, var songs:MutableList<Song?>,val delegate:SongsViewHolderDelegate):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     val VIEW_ITEMTYPE=0
     val VIEW_LOADINGTYPE=1
@@ -57,7 +77,7 @@ class SongsAdapter(recyclerView:RecyclerView, activity: FragmentActivity?, var s
        if(type == VIEW_ITEMTYPE){
            val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.song_item_view, viewGroup, false)
 
-           return SongViewHolder(view)
+           return SongViewHolder(view, delegateP = delegate)
        }else{
            val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.load_more_list_cell, viewGroup, false)
 
@@ -68,6 +88,7 @@ class SongsAdapter(recyclerView:RecyclerView, activity: FragmentActivity?, var s
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, p1: Int) {
         if(holder is SongViewHolder){
             val song = songs[p1]
+            holder.song = song
             holder.songNameText.text = song!!.name
         }else if(holder is LoadingViewHolder){
             holder.progressBar.isIndeterminate = true
