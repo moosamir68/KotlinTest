@@ -10,6 +10,11 @@ import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModel
 import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModelDelegate
 import kotlinx.android.synthetic.main.activity_login.*
 import org.w3c.dom.Text
+import android.app.ProgressDialog
+import android.view.View
+import android.widget.ProgressBar
+import kotlinx.android.synthetic.main.load_more_list_cell.*
+
 
 class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
 
@@ -66,11 +71,16 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
         val errorTitle = result.second
         if(validate){
             this.viewModel.login()
+            this.showLoading()
             return
         }
 
         Toast.makeText(this@LoginActivity, errorTitle, Toast.LENGTH_SHORT).show()
         return
+    }
+
+    private fun showLoading(){
+        this.loadingBoxView.visibility = View.VISIBLE
     }
 
     private fun changeValueUsernameEditText(){
@@ -90,6 +100,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
     }
 
     override fun faildLogin() {
+        this.loadingBoxView.visibility = View.INVISIBLE
         Toast.makeText(this@LoginActivity, this.viewModel.erroDescription, Toast.LENGTH_SHORT).show()
     }
 }
