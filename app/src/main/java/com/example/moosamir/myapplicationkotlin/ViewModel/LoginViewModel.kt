@@ -1,12 +1,11 @@
 package com.example.moosamir.myapplicationkotlin.ViewModel
 
-import android.accounts.Account
+import android.hardware.usb.UsbRequest
 import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Model.UserAccount
 import com.example.moosamir.myapplicationkotlin.Service.APIClient
+import com.example.moosamir.myapplicationkotlin.Service.APIClientDelegate
 import com.example.moosamir.myapplicationkotlin.Service.MMError
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,7 +15,7 @@ interface LoginViewModelDelegate{
     fun faildLogin()
 }
 
-public class LoginViewModel(delegate: LoginViewModelDelegate) {
+public class LoginViewModel(delegate: LoginViewModelDelegate):APIClientDelegate {
     var userNameL:String? = null
     var passwordL:String? = null
     var erroDescription:String = ""
@@ -47,30 +46,21 @@ public class LoginViewModel(delegate: LoginViewModelDelegate) {
     }
 
     public fun login(){
+        val apiClient = APIClient.getInstance()
+        val loginApi = apiClient.retrofit.create(INTNetworkApi::class.java)
+        val request = loginApi.login(userNameL!!, passwordL!!)
 
-        val loginApi = APIClient.client.create(INTNetworkApi::class.java)
+        apiClient.sendCall<UserAccount>(request, this)
+    }
 
-        val response = loginApi.login(userNameL!!, passwordL!!)
+    //API Client delegate
+    override fun <T> sucessfulyRequest(response: T) {
+        this.userAccount = response as UserAccount
+        this.delegate.sucessLogin()
+    }
 
-        response.enqueue(object : Callback<UserAccount> {
-            override fun onFailure(call: Call<UserAccount>?, t: Throwable) {
-                erroDescription = MMError<UserAccount>(null, null, t, null).errorDescription
-                delegate.faildLogin()
-            }
-
-            override fun onResponse(call: Call<UserAccount>, response: Response<UserAccount>) {
-                if(response.body() != null){
-                    userAccount = response.body()
-                    delegate.sucessLogin()
-                }else if(response.errorBody() != null){
-                    erroDescription = MMError<UserAccount>(null, null, null, response).errorDescription
-                    delegate.faildLogin()
-                }else{
-                    erroDescription = "Can not connect to server"
-                    delegate.faildLogin()
-                }
-            }
-
-        })
+    override fun <T> faildRequest(error: MMError<T>) {
+        this.erroDescription = error.errorDescription
+        this.delegate.faildLogin()
     }
 }

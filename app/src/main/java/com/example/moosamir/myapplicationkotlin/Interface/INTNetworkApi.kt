@@ -11,18 +11,18 @@ import retrofit2.Call
 
 interface INTNetworkApi {
 
-    @GET("songs")
+    @GET("")
     fun getSongs() : Observable<List<Song>>
 
-    @GET("artist")
+    @GET("5b7400dc3500006600531d6a")
     fun getArtists() : Observable<List<Artist>>
 
     fun getDataWithJson() : Observable<Dictionary<String, Any>>
 
-    @GET("Album")
-    fun getAlbums() : Observable<List<Album>>
+    @GET("5b7400933500006600531d64/")
+    fun getAlbums() : Call<List<Album>>
 
-    @GET("Songs")
+    @GET("")
     fun getDataWithArray() : List<Any>
 
     @POST("users/app_login/")
