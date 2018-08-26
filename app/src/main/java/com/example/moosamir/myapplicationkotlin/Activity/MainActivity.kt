@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     var songsFragment: SongsFragment = SongsFragment.newInstance()
     var albumsFragment: AlbumsFragment = AlbumsFragment.newInstance()
     var artinstsFragment: ArtistsFragment = ArtistsFragment.newInstance()
+    var profileFragment: ProfileFragment = ProfileFragment.newInstance()
 
     override fun startActivity(intent: Intent?) {
         super.startActivity(intent)
@@ -37,14 +38,22 @@ class MainActivity : AppCompatActivity() {
                 openFragment(this.songsFragment)
                 return@OnNavigationItemSelectedListener true
             }
+
             R.id.navigation_albums -> {
                 this.toolbar.setTitle("Albums")
                 openFragment(this.albumsFragment)
                 return@OnNavigationItemSelectedListener true
             }
+
             R.id.navigation_artists -> {
                 this.toolbar.setTitle("Artists")
                 openFragment(this.artinstsFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.navigation_profile -> {
+                this.toolbar.setTitle("Profile")
+                openFragment(this.profileFragment)
                 return@OnNavigationItemSelectedListener true
             }
         }

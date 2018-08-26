@@ -17,6 +17,9 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
 
     val viewModel = LoginViewModel(this)
 
+    init {
+        print("")
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
