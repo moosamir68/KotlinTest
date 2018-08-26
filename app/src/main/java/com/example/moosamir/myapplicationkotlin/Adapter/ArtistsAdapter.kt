@@ -11,11 +11,31 @@ import com.example.moosamir.myapplicationkotlin.Model.Artist
 import com.example.moosamir.myapplicationkotlin.R
 import kotlinx.android.synthetic.main.artist_item_view.view.*
 
-internal class ArtistViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){
-    var artistNameText = itemView.artist_name_textview
+interface ArtistsViewHolderDelegate{
+    fun userSelectArtist(artist: Artist)
 }
 
-class ArtistsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var artists:MutableList<Artist?>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+internal class ArtistViewHolder(itemView:View, val delegateP:ArtistsViewHolderDelegate):RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    var delegate:ArtistsViewHolderDelegate
+    var artistNameText = itemView.artist_name_textview
+    var artist:Artist? = null
+
+    init {
+        this.delegate = delegateP
+        this.artistNameText.setOnClickListener(this)
+        itemView.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        if(v!!.id == artistNameText.id){
+
+        }else if(v!!.id == itemView.id){
+            this.delegate.userSelectArtist(this.artist!!)
+        }
+    }
+}
+
+class ArtistsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var artists:MutableList<Artist?>, val delegate:ArtistsViewHolderDelegate):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     val VIEW_ARTISTTYPE = 0
     val VIEW_LOADINGTYPE = 1
@@ -53,7 +73,7 @@ class ArtistsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var 
         if(type ==VIEW_ARTISTTYPE){
             val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.artist_item_view,viewGroup, false)
 
-            return ArtistViewHolder(view)
+            return ArtistViewHolder(view, delegate)
         }else{
             val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.load_more_list_cell,viewGroup, false)
 
@@ -65,6 +85,7 @@ class ArtistsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var 
         if(viewHolder is ArtistViewHolder){
             val artist = this.artists[position]
             viewHolder.artistNameText.text = artist!!.name
+            viewHolder.artist = artist
         }else if(viewHolder is LoadingViewHolder){
             viewHolder.progressBar.isIndeterminate = true
         }

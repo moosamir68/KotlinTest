@@ -1,9 +1,9 @@
-package com.example.moosamir.myapplicationkotlin
+package com.example.moosamir.myapplicationkotlin.Activity
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.moosamir.myapplicationkotlin.R
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.moosamir.myapplicationkotlin
+package com.example.moosamir.myapplicationkotlin.Activity
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -9,11 +9,8 @@ import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModel
 import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModelDelegate
 import kotlinx.android.synthetic.main.activity_login.*
-import org.w3c.dom.Text
-import android.app.ProgressDialog
 import android.view.View
-import android.widget.ProgressBar
-import kotlinx.android.synthetic.main.load_more_list_cell.*
+import com.example.moosamir.myapplicationkotlin.R
 
 
 class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {

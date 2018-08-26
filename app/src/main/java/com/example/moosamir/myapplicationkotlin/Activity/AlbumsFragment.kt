@@ -1,4 +1,6 @@
-package com.example.moosamir.myapplicationkotlin
+package com.example.moosamir.myapplicationkotlin.Activity
+
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -8,12 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.AlbumsAdapter
+import com.example.moosamir.myapplicationkotlin.Adapter.AlbumsViewHolderDelegate
+import com.example.moosamir.myapplicationkotlin.AlbumActivity
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
+import com.example.moosamir.myapplicationkotlin.Model.Album
+import com.example.moosamir.myapplicationkotlin.R
 import com.example.moosamir.myapplicationkotlin.ViewModel.AlbumsViewModel
 import kotlinx.android.synthetic.main.fragment_songs.view.*
 
-class AlbumsFragment : Fragment(), MLoadMore, ViewModelDelegate {
+class AlbumsFragment : Fragment(), MLoadMore, ViewModelDelegate, AlbumsViewHolderDelegate {
 
     var adapter:AlbumsAdapter? = null
     val viewModel:AlbumsViewModel
@@ -30,7 +36,7 @@ class AlbumsFragment : Fragment(), MLoadMore, ViewModelDelegate {
         val linearLayoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = linearLayoutManager
 
-        adapter = AlbumsAdapter(recyclerView, activity, this.viewModel.albums)
+        adapter = AlbumsAdapter(recyclerView, activity, this.viewModel.albums, this)
         recyclerView.adapter = adapter
 
         adapter!!.setLoadMore(this)
@@ -65,5 +71,12 @@ class AlbumsFragment : Fragment(), MLoadMore, ViewModelDelegate {
         println("error get songs")
         this.adapter!!.notifyDataSetChanged()
         this.adapter!!.setLoaded()
+    }
+
+    //MARK:- album view holder delegate
+    override fun userSelectAlbum(album: Album) {
+        val albumIntent = Intent(activity, AlbumActivity::class.java)
+        albumIntent.putExtra("ALBUM", album)
+        startActivity(albumIntent)
     }
 }

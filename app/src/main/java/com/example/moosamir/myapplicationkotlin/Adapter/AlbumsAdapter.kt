@@ -11,11 +11,31 @@ import com.example.moosamir.myapplicationkotlin.Model.Album
 import com.example.moosamir.myapplicationkotlin.R
 import kotlinx.android.synthetic.main.album_item_view.view.*
 
-internal class AlbumViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){
-    var albumNameText = itemView.album_name_textview
+interface AlbumsViewHolderDelegate{
+    fun userSelectAlbum(album: Album)
 }
 
-class AlbumsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var albums:MutableList<Album?>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+internal class AlbumViewHolder(itemView:View, val delegateP:AlbumsViewHolderDelegate):RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    var delegate:AlbumsViewHolderDelegate
+    var albumNameText = itemView.album_name_textview
+    var album: Album? = null
+
+    init {
+        this.delegate = delegateP
+        this.albumNameText.setOnClickListener(this)
+        itemView.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        if(v!!.id == albumNameText.id){
+
+        }else if(v!!.id == itemView.id){
+            this.delegate.userSelectAlbum(this.album!!)
+        }
+    }
+}
+
+class AlbumsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var albums:MutableList<Album?>, val delegate:AlbumsViewHolderDelegate):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     val VIEW_ALBUMTYPE = 0
     val VIEW_LOADINGTYPE = 1
@@ -52,7 +72,7 @@ class AlbumsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var a
         if(type ==VIEW_ALBUMTYPE){
             val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.album_item_view,viewGroup, false)
 
-            return AlbumViewHolder(view)
+            return AlbumViewHolder(view, delegate)
         }else{
             val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.load_more_list_cell,viewGroup, false)
 
@@ -64,6 +84,7 @@ class AlbumsAdapter(recyclerView:RecyclerView, activity:FragmentActivity?, var a
         if(viewHolder is AlbumViewHolder){
             val album = this.albums[position]
             viewHolder.albumNameText.text = album!!.name
+            viewHolder.album = album
         }else if(viewHolder is LoadingViewHolder){
             viewHolder.progressBar.isIndeterminate = true
         }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_song"
+        android:id="@+id/toolbar_artist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -17,7 +17,7 @@
         tools:layout_editor_absoluteY="511dp"></android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/song_name_textview"
+        android:id="@+id/artist_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

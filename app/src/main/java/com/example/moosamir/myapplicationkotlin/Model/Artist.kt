@@ -1,3 +1,5 @@
 package com.example.moosamir.myapplicationkotlin.Model
 
-data class Artist(var name:String, var family:String)
+import java.io.Serializable
+
+data class Artist(var name:String, var family:String):Serializable

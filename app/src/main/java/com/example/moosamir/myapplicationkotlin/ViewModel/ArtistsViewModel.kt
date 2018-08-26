@@ -27,7 +27,7 @@ public class ArtistsViewModel(val delegate: ViewModelDelegate):APIClientDelegate
 
     fun random10Data(){
         for (i in 0..9) {
-            var name = "album test" + i.toString()
+            var name = "Artist test" + i.toString()
             var family = "family artist test" + i.toString()
             var artist = Artist(name, family)
             artists.add(artist)

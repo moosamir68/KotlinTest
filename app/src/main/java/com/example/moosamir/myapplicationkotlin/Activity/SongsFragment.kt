@@ -1,4 +1,4 @@
-package com.example.moosamir.myapplicationkotlin
+package com.example.moosamir.myapplicationkotlin.Activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,8 @@ import com.example.moosamir.myapplicationkotlin.Adapter.SongsViewHolderDelegate
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
 import com.example.moosamir.myapplicationkotlin.Model.Song
+import com.example.moosamir.myapplicationkotlin.R
+import com.example.moosamir.myapplicationkotlin.SongActivity
 import com.example.moosamir.myapplicationkotlin.ViewModel.SongsViewModel
 import kotlinx.android.synthetic.main.fragment_songs.view.*
 

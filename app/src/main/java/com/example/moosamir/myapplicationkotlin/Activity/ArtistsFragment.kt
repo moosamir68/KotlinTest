@@ -1,4 +1,6 @@
-package com.example.moosamir.myapplicationkotlin
+package com.example.moosamir.myapplicationkotlin.Activity
+
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -8,12 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.moosamir.myapplicationkotlin.Adapter.ArtistsAdapter
+import com.example.moosamir.myapplicationkotlin.Adapter.ArtistsViewHolderDelegate
+import com.example.moosamir.myapplicationkotlin.ArtistActivity
 import com.example.moosamir.myapplicationkotlin.Interface.MLoadMore
 import com.example.moosamir.myapplicationkotlin.Interface.ViewModelDelegate
+import com.example.moosamir.myapplicationkotlin.Model.Artist
+import com.example.moosamir.myapplicationkotlin.R
 import com.example.moosamir.myapplicationkotlin.ViewModel.ArtistsViewModel
 import kotlinx.android.synthetic.main.fragment_songs.view.*
 
-class ArtistsFragment : Fragment(), MLoadMore, ViewModelDelegate {
+class ArtistsFragment : Fragment(), MLoadMore, ViewModelDelegate, ArtistsViewHolderDelegate {
 
     var adapter:ArtistsAdapter? = null
     val viewModel:ArtistsViewModel
@@ -30,7 +36,7 @@ class ArtistsFragment : Fragment(), MLoadMore, ViewModelDelegate {
         val linearLayoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = linearLayoutManager
 
-        adapter = ArtistsAdapter(recyclerView, activity, this.viewModel.artists)
+        adapter = ArtistsAdapter(recyclerView, activity, this.viewModel.artists, this)
         recyclerView.adapter = adapter
 
         adapter!!.setLoadMore(this)
@@ -64,5 +70,12 @@ class ArtistsFragment : Fragment(), MLoadMore, ViewModelDelegate {
         println("error get songs")
         this.adapter!!.notifyItemRemoved(this.viewModel.artists.size)
         this.adapter!!.setLoaded()
+    }
+
+    //MARK:- artist view holder delegate
+    override fun userSelectArtist(artist: Artist) {
+        val artistIntent = Intent(activity, ArtistActivity::class.java)
+        artistIntent.putExtra("ARTIST", artist)
+        startActivity(artistIntent)
     }
 }
