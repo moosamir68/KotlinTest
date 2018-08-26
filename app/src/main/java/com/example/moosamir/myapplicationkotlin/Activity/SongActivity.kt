@@ -1,5 +1,6 @@
 package com.example.moosamir.myapplicationkotlin
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
@@ -19,9 +20,13 @@ class SongActivity : AppCompatActivity(), SongViewModelDelegate {
         this.viewModel = SongViewModel(this)
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out);
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val song = intent.getSerializableExtra("SONG") as Song
         this.viewModel.song = song
         setContentView(R.layout.activity_song)

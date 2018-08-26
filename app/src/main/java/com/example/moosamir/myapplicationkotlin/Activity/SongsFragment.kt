@@ -80,6 +80,6 @@ class SongsFragment : Fragment(), MLoadMore, ViewModelDelegate, SongsViewHolderD
     override fun userSelectSong(song:Song) {
         val songIntent = Intent(activity, SongActivity::class.java)
         songIntent.putExtra("SONG", song)
-        startActivity(songIntent)
+        activity!!.startActivity(songIntent)
     }
 }

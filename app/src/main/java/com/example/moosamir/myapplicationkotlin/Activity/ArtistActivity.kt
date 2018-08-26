@@ -19,6 +19,11 @@ class ArtistActivity : AppCompatActivity(), ArtistViewModelDelegate {
         this.viewModel = ArtistViewModel(this)
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out);
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,7 +39,6 @@ class ArtistActivity : AppCompatActivity(), ArtistViewModelDelegate {
         var arrowBack = R.drawable.abc_ic_ab_back_material
 
         this.toolbar_artist.setNavigationIcon(arrowBack)
-
 
         this.toolbar_artist.setTitle("Artist")
 

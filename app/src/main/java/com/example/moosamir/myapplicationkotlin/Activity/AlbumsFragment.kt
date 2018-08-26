@@ -77,6 +77,6 @@ class AlbumsFragment : Fragment(), MLoadMore, ViewModelDelegate, AlbumsViewHolde
     override fun userSelectAlbum(album: Album) {
         val albumIntent = Intent(activity, AlbumActivity::class.java)
         albumIntent.putExtra("ALBUM", album)
-        startActivity(albumIntent)
+        activity!!.startActivity(albumIntent)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.moosamir.myapplicationkotlin.Activity
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -12,6 +13,11 @@ class MainActivity : AppCompatActivity() {
     var songsFragment: SongsFragment = SongsFragment.newInstance()
     var albumsFragment: AlbumsFragment = AlbumsFragment.newInstance()
     var artinstsFragment: ArtistsFragment = ArtistsFragment.newInstance()
+
+    override fun startActivity(intent: Intent?) {
+        super.startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

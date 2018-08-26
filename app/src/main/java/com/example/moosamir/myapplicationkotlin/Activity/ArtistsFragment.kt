@@ -76,6 +76,6 @@ class ArtistsFragment : Fragment(), MLoadMore, ViewModelDelegate, ArtistsViewHol
     override fun userSelectArtist(artist: Artist) {
         val artistIntent = Intent(activity, ArtistActivity::class.java)
         artistIntent.putExtra("ARTIST", artist)
-        startActivity(artistIntent)
+        activity!!.startActivity(artistIntent)
     }
 }

@@ -19,6 +19,11 @@ class AlbumActivity : AppCompatActivity(), AlbumViewModelDelegate {
         this.viewModel = AlbumViewModel(this)
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out);
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
