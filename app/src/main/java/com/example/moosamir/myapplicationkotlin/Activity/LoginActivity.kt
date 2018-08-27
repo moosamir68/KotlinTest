@@ -11,6 +11,7 @@ import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModelDelegate
 import kotlinx.android.synthetic.main.activity_login.*
 import android.view.View
 import com.example.moosamir.myapplicationkotlin.R
+import com.example.moosamir.myapplicationkotlin.Service.CacheManager
 
 
 class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
@@ -20,6 +21,7 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
     init {
         print("")
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -83,6 +85,10 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
         this.loadingBoxView.visibility = View.VISIBLE
     }
 
+    private fun hideLoading(){
+        this.loadingBoxView.visibility = View.INVISIBLE
+    }
+
     private fun changeValueUsernameEditText(){
 
     }
@@ -95,8 +101,11 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
     //login view model delegate
     override fun sucessLogin() {
         //show next page
+        this.hideLoading()
+        CacheManager(this).saveAccount(this.viewModel.userAccount!!)
         val main = Intent(this, MainActivity::class.java)
         startActivity(main)
+        this.finish()
     }
 
     override fun faildLogin() {

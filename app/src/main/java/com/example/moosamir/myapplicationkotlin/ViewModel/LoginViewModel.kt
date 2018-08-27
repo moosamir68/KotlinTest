@@ -5,6 +5,7 @@ import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Model.UserAccount
 import com.example.moosamir.myapplicationkotlin.Service.APIClient
 import com.example.moosamir.myapplicationkotlin.Service.APIClientDelegate
+import com.example.moosamir.myapplicationkotlin.Service.CacheManager
 import com.example.moosamir.myapplicationkotlin.Service.MMError
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,6 +50,8 @@ public class LoginViewModel(delegate: LoginViewModelDelegate):APIClientDelegate 
         val apiClient = APIClient.getInstance()
         val loginApi = apiClient.retrofit.create(INTNetworkApi::class.java)
         val request = loginApi.login(userNameL!!, passwordL!!)
+        val account = UserAccount("moosa", "moosamir")
+        this.userAccount = account
         this.delegate.sucessLogin()
 
 //        apiClient.sendCall<UserAccount>(request, this)

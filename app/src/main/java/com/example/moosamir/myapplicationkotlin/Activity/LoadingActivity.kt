@@ -12,14 +12,18 @@ class LoadingActivity : AppCompatActivity(), LoadingViewModelDelegate {
 
     val viewModel = LoadingViewModel(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_loading)
+    override fun onResume() {
+        super.onResume()
         this.initUI()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_loading)
+    }
+
     private fun initUI(){
-        if(this.viewModel.canShowMain()){
+        if(this.viewModel.canShowMain(this)){
             val mainActivity = Intent(this, MainActivity::class.java)
             startActivity(mainActivity)
         }else{
