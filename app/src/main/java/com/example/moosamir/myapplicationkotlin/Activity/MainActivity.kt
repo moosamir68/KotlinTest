@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        this.toolbar.setTitle("Songs")
+        openFragment(this.songsFragment)
         this.navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 

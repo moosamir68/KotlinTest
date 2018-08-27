@@ -3,18 +3,26 @@
 
     <item
         android:id="@+id/navigation_songs"
+        android:icon="@drawable/ic_song"
+        android:iconTint="@color/white"
         android:title="Songs"/>
 
     <item
         android:id="@+id/navigation_albums"
+        android:icon="@drawable/ic_album"
+        android:iconTint="@color/white"
         android:title="Albums"/>
 
     <item
         android:id="@+id/navigation_artists"
+        android:icon="@drawable/ic_artist"
+        android:iconTint="@color/white"
         android:title="Artists"/>
 
     <item
         android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile"
+        android:iconTint="@color/white"
         android:title="Profile"/>
 
     <!--android:icon="@drawable/ic_launcher_background"-->

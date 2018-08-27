@@ -20,11 +20,9 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="autoMirrored" value="true" />
-                            <entry key="height" value="32" />
-                            <entry key="outputName" value="ic_menulist" />
+                            <entry key="outputName" value="ic_profile" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/menuList.svg" />
-                            <entry key="width" value="32" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/KotlinTest/Profile.svg" />
                           </map>
                         </option>
                       </PersistentState>
