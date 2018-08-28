@@ -1,15 +1,14 @@
 package com.example.moosamir.myapplicationkotlin
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import com.example.moosamir.myapplicationkotlin.Helper.LocaleHelper
 import com.example.moosamir.myapplicationkotlin.Model.Song
 import com.example.moosamir.myapplicationkotlin.ViewModel.SongViewModel
 import com.example.moosamir.myapplicationkotlin.ViewModel.SongViewModelDelegate
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_song.*
 
 class SongActivity : AppCompatActivity(), SongViewModelDelegate {
@@ -22,7 +21,7 @@ class SongActivity : AppCompatActivity(), SongViewModelDelegate {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out);
+        overridePendingTransition(this.getAnimateForIn(), this.getAnimateForOut());
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,5 +78,23 @@ class SongActivity : AppCompatActivity(), SongViewModelDelegate {
 
     private fun userDidTapOnMenuShare(){
         print("user did tap on menu share")
+    }
+
+    private fun getAnimateForIn():Int{
+        val language = LocaleHelper.getLanguage(this)
+        if(language == "fa"){
+            return R.anim.fa_anim_semi_in
+        }else{
+            return R.anim.en_anim_semi_in
+        }
+    }
+
+    private fun getAnimateForOut():Int{
+        val language = LocaleHelper.getLanguage(this)
+        if(language == "fa"){
+            return R.anim.fa_anim_out
+        }else{
+            return R.anim.en_animate_out
+        }
     }
 }

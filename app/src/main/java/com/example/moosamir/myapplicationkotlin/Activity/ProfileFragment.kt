@@ -69,6 +69,7 @@ public class ProfileFragment : Fragment(), ProfileViewModelDelegate {
 
     private fun userDidTapOnChangeLanguageButton(){
 
+        this.profile_progress.visibility = View.VISIBLE
         var newLanguageCode = LocaleHelper.getLanguage(this.activity!!)
 
         if(newLanguageCode == "fa"){

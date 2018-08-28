@@ -2,17 +2,13 @@ package com.example.moosamir.myapplicationkotlin.Activity
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import com.example.moosamir.myapplicationkotlin.Helper.LocaleHelper
 import com.example.moosamir.myapplicationkotlin.R
-import com.example.moosamir.myapplicationkotlin.Service.PREFS_FILENAME
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 interface MainActivityDelegate{
     fun reloadApp()
@@ -29,7 +25,7 @@ class MainActivity : AppCompatActivity(), ProfileFragmentDelegate {
 
     override fun startActivity(intent: Intent?) {
         super.startActivity(intent)
-        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);
+        overridePendingTransition(this.getAnimateForIn(), this.getAnimateForOut())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +84,24 @@ class MainActivity : AppCompatActivity(), ProfileFragmentDelegate {
     //MARK:- profile delegate
     override fun changeLanguageTo(newLang: String) {
         LocaleHelper.setLocale(this, newLang)
-//        this.finish()
-        this.parent.finish()
+        this.finish()
+    }
+
+    private fun getAnimateForIn():Int{
+        val language = LocaleHelper.getLanguage(this)
+        if(language == "fa"){
+            return R.anim.fa_anim_in
+        }else{
+            return R.anim.en_animate_in
+        }
+    }
+
+    private fun getAnimateForOut():Int{
+        val language = LocaleHelper.getLanguage(this)
+        if(language == "fa"){
+            return R.anim.fa_anim_semi_out
+        }else{
+            return R.anim.en_anim_semi_out
+        }
     }
 }

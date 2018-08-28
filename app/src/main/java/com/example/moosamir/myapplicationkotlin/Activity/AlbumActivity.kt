@@ -5,11 +5,11 @@ import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import com.example.moosamir.myapplicationkotlin.Helper.LocaleHelper
 import com.example.moosamir.myapplicationkotlin.Model.Album
 import com.example.moosamir.myapplicationkotlin.ViewModel.AlbumViewModel
 import com.example.moosamir.myapplicationkotlin.ViewModel.AlbumViewModelDelegate
 import kotlinx.android.synthetic.main.activity_album.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class AlbumActivity : AppCompatActivity(), AlbumViewModelDelegate {
 
@@ -21,7 +21,7 @@ class AlbumActivity : AppCompatActivity(), AlbumViewModelDelegate {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out);
+        overridePendingTransition(this.getAnimateForIn(), this.getAnimateForOut());
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,5 +79,23 @@ class AlbumActivity : AppCompatActivity(), AlbumViewModelDelegate {
 
     private fun userDidTapOnMenuShare(){
         print("user did tap on menu share")
+    }
+
+    private fun getAnimateForIn():Int{
+        val language = LocaleHelper.getLanguage(this)
+        if(language == "fa"){
+            return R.anim.fa_anim_semi_in
+        }else{
+            return R.anim.en_anim_semi_in
+        }
+    }
+
+    private fun getAnimateForOut():Int{
+        val language = LocaleHelper.getLanguage(this)
+        if(language == "fa"){
+            return R.anim.fa_anim_out
+        }else{
+            return R.anim.en_animate_out
+        }
     }
 }

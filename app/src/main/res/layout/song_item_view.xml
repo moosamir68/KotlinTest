@@ -17,13 +17,14 @@
             android:padding="20dp"
             android:textAlignment="center"
             android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="Gogosh" />
+
         <ImageView
             android:id="@+id/song_image_imageview"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>
