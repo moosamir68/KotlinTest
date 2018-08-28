@@ -1,5 +1,6 @@
 package com.example.moosamir.myapplicationkotlin.Activity
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModel
 import com.example.moosamir.myapplicationkotlin.ViewModel.LoginViewModelDelegate
 import kotlinx.android.synthetic.main.activity_login.*
 import android.view.View
+import com.example.moosamir.myapplicationkotlin.Helper.LocaleHelper
 import com.example.moosamir.myapplicationkotlin.R
 import com.example.moosamir.myapplicationkotlin.Service.CacheManager
 
@@ -96,6 +98,10 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
         //show register page form login controller
         val register = Intent(this, RegisterActivity::class.java)
         startActivity(register)
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase!!));
     }
 
     //login view model delegate

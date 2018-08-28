@@ -58,14 +58,14 @@
                 android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="login"
+                android:text="@string/login"
                 app:layout_constraintLeft_toRightOf="@id/registerButton" />
 
             <Button
                 android:id="@+id/registerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reister"
+                android:text="@string/register"
                 app:layout_constraintLeft_toLeftOf="@id/buttonsBoxView" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>

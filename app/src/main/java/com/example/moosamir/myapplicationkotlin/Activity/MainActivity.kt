@@ -1,19 +1,31 @@
 package com.example.moosamir.myapplicationkotlin.Activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
+import com.example.moosamir.myapplicationkotlin.Helper.LocaleHelper
 import com.example.moosamir.myapplicationkotlin.R
+import com.example.moosamir.myapplicationkotlin.Service.PREFS_FILENAME
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
-class MainActivity : AppCompatActivity() {
+interface MainActivityDelegate{
+    fun reloadApp()
+}
+
+class MainActivity : AppCompatActivity(), ProfileFragmentDelegate {
 
     var songsFragment: SongsFragment = SongsFragment.newInstance()
     var albumsFragment: AlbumsFragment = AlbumsFragment.newInstance()
     var artinstsFragment: ArtistsFragment = ArtistsFragment.newInstance()
-    var profileFragment: ProfileFragment = ProfileFragment.newInstance()
+    var profileFragment: ProfileFragment = ProfileFragment.newInstance(this)
+
+    var delegate:MainActivityDelegate? = null
 
     override fun startActivity(intent: Intent?) {
         super.startActivity(intent)
@@ -67,5 +79,16 @@ class MainActivity : AppCompatActivity() {
         transaction.replace(R.id.container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase!!));
+    }
+
+    //MARK:- profile delegate
+    override fun changeLanguageTo(newLang: String) {
+        LocaleHelper.setLocale(this, newLang)
+//        this.finish()
+        this.parent.finish()
     }
 }

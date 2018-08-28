@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">برنامه من</string>
+
+    <string name="artists">هنرمندان</string>
+    <string name="songs">آهنگ‌ها</string>
+    <string name="albums">آلبوم‌ها</string>
+    <string name="profile">کاربر</string>
+
+    <string name="login">ورود</string>
+    <string name="register">ثبت نام</string>
+</resources>
