@@ -21,4 +21,11 @@
     <string name="please_enter_confirm_password">لطفا کلمه عبور خود را وارد نمایید</string>
     <string name="passwords_is_not_equal">کلمات عبور یکسان نیست</string>
     <string name="confirm_password">کلمه عبور</string>
+
+    <string name="song">آهنگ</string>
+    <string name="artist">هنرمند</string>
+    <string name="album">آلبوم</string>
+
+    <string name="delete">حذف</string>
+    <string name="more_info">اطلاعات بیشتر</string>
 </resources>

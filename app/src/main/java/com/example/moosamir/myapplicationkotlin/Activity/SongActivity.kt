@@ -1,14 +1,17 @@
 package com.example.moosamir.myapplicationkotlin
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import com.example.moosamir.myapplicationkotlin.Helper.LocaleHelper
 import com.example.moosamir.myapplicationkotlin.Model.Song
 import com.example.moosamir.myapplicationkotlin.ViewModel.SongViewModel
 import com.example.moosamir.myapplicationkotlin.ViewModel.SongViewModelDelegate
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_song.*
 
 class SongActivity : AppCompatActivity(), SongViewModelDelegate {
@@ -39,25 +42,32 @@ class SongActivity : AppCompatActivity(), SongViewModelDelegate {
 
         this.toolbar_song.setNavigationIcon(arrowBack)
 
-
-        this.toolbar_song.setTitle("Song")
-
-        this.toolbar_song.inflateMenu(R.menu.menu_toolbar)
+        this.toolbar_song.setTitle(getString(R.string.song))
 
         this.toolbar_song.setNavigationOnClickListener(){
             this.userDidTapOnBackButton()
         }
+
+        this.toolbar_song.inflateMenu(R.menu.menu_toolbar)
+        this.initMenuToolbarUI()
 
         this.toolbar_song.setOnMenuItemClickListener {
             this.userDidTapOnMenuItem(it)
             return@setOnMenuItemClickListener true
         }
 
+    }
+
+    private fun initMenuToolbarUI(){
         val menuItemListIcon = this.toolbar_song.menu.findItem(R.id.menu_list).icon
         menuItemListIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
         val menuItemShareIcon = this.toolbar_song.menu.findItem(R.id.menu_share).icon
         menuItemShareIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+
+        this.toolbar_song.menu.findItem(R.id.menu_song_delete)
+
+        this.toolbar_song.menu.findItem(R.id.menu_song_info)
     }
 
     private fun userDidTapOnBackButton(){
@@ -96,5 +106,9 @@ class SongActivity : AppCompatActivity(), SongViewModelDelegate {
         }else{
             return R.anim.en_animate_out
         }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase!!));
     }
 }

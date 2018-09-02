@@ -7,13 +7,27 @@
         android:icon="@drawable/ic_menulist"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:title="List" />
+        android:title="" />
 
     <item
         android:id="@+id/menu_share"
         android:icon="@drawable/ic_menulist"
         android:orderInCategory="200"
         app:showAsAction="always"
-        android:title="Share" />
+        android:title="" />
+
+    <item
+        android:id="@+id/menu_song_delete"
+        android:icon="@drawable/ic_menulist"
+        android:orderInCategory="100"
+        app:showAsAction="withText"
+        android:title="@string/delete" />
+
+    <item
+        android:id="@+id/menu_song_info"
+        android:icon="@drawable/ic_menulist"
+        android:orderInCategory="200"
+        app:showAsAction="withText"
+        android:title="@string/more_info" />
 
 </menu>

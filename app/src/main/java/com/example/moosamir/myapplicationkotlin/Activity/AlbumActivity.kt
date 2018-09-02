@@ -1,5 +1,6 @@
 package com.example.moosamir.myapplicationkotlin
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
@@ -41,9 +42,10 @@ class AlbumActivity : AppCompatActivity(), AlbumViewModelDelegate {
         this.toolbar_album.setNavigationIcon(arrowBack)
 
 
-        this.toolbar_album.setTitle("Album")
+        this.toolbar_album.setTitle(getString(R.string.album))
 
         this.toolbar_album.inflateMenu(R.menu.menu_toolbar)
+        this.initMenuToolbarUI()
 
         this.toolbar_album.setNavigationOnClickListener(){
             this.userDidTapOnBackButton()
@@ -53,12 +55,18 @@ class AlbumActivity : AppCompatActivity(), AlbumViewModelDelegate {
             this.userDidTapOnMenuItem(it)
             return@setOnMenuItemClickListener true
         }
+    }
 
+    private fun initMenuToolbarUI(){
         val menuItemListIcon = this.toolbar_album.menu.findItem(R.id.menu_list).icon
         menuItemListIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
         val menuItemShareIcon = this.toolbar_album.menu.findItem(R.id.menu_share).icon
         menuItemShareIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+
+        this.toolbar_album.menu.findItem(R.id.menu_song_delete)
+
+        this.toolbar_album.menu.findItem(R.id.menu_song_info)
     }
 
     private fun userDidTapOnBackButton(){
@@ -97,5 +105,9 @@ class AlbumActivity : AppCompatActivity(), AlbumViewModelDelegate {
         }else{
             return R.anim.en_animate_out
         }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase!!));
     }
 }
