@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), ProfileFragmentDelegate {
     }
 
     private fun initUI() {
-        this.toolbar.setTitle("Songs")
+        this.toolbar.setTitle(R.string.songs)
         openFragment(this.songsFragment)
         this.navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
@@ -43,26 +43,25 @@ class MainActivity : AppCompatActivity(), ProfileFragmentDelegate {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_songs -> {
-                this.toolbar.setTitle("Songs")
-
+                this.toolbar.setTitle(R.string.songs)
                 openFragment(this.songsFragment)
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.navigation_albums -> {
-                this.toolbar.setTitle("Albums")
+                this.toolbar.setTitle(R.string.albums)
                 openFragment(this.albumsFragment)
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.navigation_artists -> {
-                this.toolbar.setTitle("Artists")
+                this.toolbar.setTitle(R.string.artists)
                 openFragment(this.artinstsFragment)
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.navigation_profile -> {
-                this.toolbar.setTitle("Profile")
+                this.toolbar.setTitle(R.string.profile)
                 openFragment(this.profileFragment)
                 return@OnNavigationItemSelectedListener true
             }

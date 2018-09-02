@@ -18,7 +18,7 @@ import com.example.moosamir.myapplicationkotlin.Service.CacheManager
 
 class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
 
-    val viewModel = LoginViewModel(this)
+    val viewModel = LoginViewModel(this, this)
 
     init {
         print("")
@@ -31,7 +31,6 @@ class LoginActivity : AppCompatActivity(), LoginViewModelDelegate {
     }
 
     private fun initUI(){
-        this.titleLabel.text = "Your welcome"
         this.loginButton.setOnClickListener {
             this.userDidTapOnLoginButton()
         }

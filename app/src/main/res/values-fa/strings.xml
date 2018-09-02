@@ -9,4 +9,16 @@
 
     <string name="login">ورود</string>
     <string name="register">ثبت نام</string>
+
+    <string name="change_lang">تغییر زبان</string>
+    <string name="sign_out">خروج</string>
+
+    <string name="user_name">نام کاربری</string>
+    <string name="password">کلمه عبور</string>
+    <string name="your_welcome">خوش آمدید</string>
+    <string name="please_enter_username">لطفا نام کاربری خود را وارد نمایید</string>
+    <string name="please_enter_password">لطفا کلمه عبور خود را وارد نمایید</string>
+    <string name="please_enter_confirm_password">لطفا کلمه عبور خود را وارد نمایید</string>
+    <string name="passwords_is_not_equal">کلمات عبور یکسان نیست</string>
+    <string name="confirm_password">کلمه عبور</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.example.moosamir.myapplicationkotlin.Activity
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.moosamir.myapplicationkotlin.Helper.LocaleHelper
 import com.example.moosamir.myapplicationkotlin.R
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -15,7 +17,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun initUI(){
-        this.titleLabel.text = "Register page"
         this.loginButton.setOnClickListener {
             this.userDidTapOnLoginButton()
         }
@@ -52,15 +53,19 @@ class RegisterActivity : AppCompatActivity() {
         val rePasswrod = this.rePassword.text.toString()
 
         if(userName == ""){
-            return  Pair(false, "Please enter username")
+            return  Pair(false, getString(R.string.please_enter_username))
         }else if(passwrod == ""){
-            return  Pair(false, "Please enter password")
+            return  Pair(false, getString(R.string.please_enter_password))
         }else if(rePasswrod == ""){
-            return  Pair(false, "Please enter confirm password")
+            return  Pair(false, getString(R.string.please_enter_confirm_password))
         }else if(rePasswrod != passwrod){
-            return  Pair(false, "Password and repassword is not equal")
+            return  Pair(false, getString(R.string.passwords_is_not_equal))
         }
 
         return  Pair(true, null)
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase!!));
     }
 }

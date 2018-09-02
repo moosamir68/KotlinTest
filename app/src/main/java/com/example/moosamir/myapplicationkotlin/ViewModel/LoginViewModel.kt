@@ -1,8 +1,11 @@
 package com.example.moosamir.myapplicationkotlin.ViewModel
 
+import android.app.Activity
+import android.content.res.Resources
 import android.hardware.usb.UsbRequest
 import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
 import com.example.moosamir.myapplicationkotlin.Model.UserAccount
+import com.example.moosamir.myapplicationkotlin.R
 import com.example.moosamir.myapplicationkotlin.Service.APIClient
 import com.example.moosamir.myapplicationkotlin.Service.APIClientDelegate
 import com.example.moosamir.myapplicationkotlin.Service.CacheManager
@@ -16,7 +19,7 @@ interface LoginViewModelDelegate{
     fun faildLogin()
 }
 
-public class LoginViewModel(delegate: LoginViewModelDelegate):APIClientDelegate {
+public class LoginViewModel(delegate: LoginViewModelDelegate, activity:Activity):APIClientDelegate {
     var userNameL:String? = null
     var passwordL:String? = null
     var erroDescription:String = ""
@@ -24,9 +27,11 @@ public class LoginViewModel(delegate: LoginViewModelDelegate):APIClientDelegate 
     var userAccount:UserAccount? = null
 
     var delegate:LoginViewModelDelegate
+    var activity:Activity
 
     init {
         this.delegate = delegate
+        this.activity = activity
     }
     public fun setUsername(usernameP:String?){
         this.userNameL = usernameP
@@ -38,9 +43,9 @@ public class LoginViewModel(delegate: LoginViewModelDelegate):APIClientDelegate 
 
     public fun checkValidateData():Pair<Boolean, String>{
         if(userNameL == "" || userNameL == null){
-            return Pair(false, "Please enter username")
+            return Pair(false, activity.getString(R.string.please_enter_username))
         }else if(passwordL == "" || passwordL == null){
-            return Pair(false, "please enter password")
+            return Pair(false, activity.getString(R.string.please_enter_password))
         }
 
         return Pair(true, "")
