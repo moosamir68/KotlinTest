@@ -64,6 +64,8 @@ public class ProfileFragment : Fragment(), ProfileViewModelDelegate {
 
     private fun userDidTapOnLogoutButton(){
         this.viewModel.signOut(this.context!!)
+        val loginActivity = Intent(this.activity, LoginActivity::class.java)
+        startActivity(loginActivity)
         this.activity!!.finish()
     }
 

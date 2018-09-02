@@ -19,78 +19,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activity.LoginActivity" android:theme="@style/Theme.Design.Light.NoActionBar" android:configChanges="locale">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Activity.LoginActivity" android:theme="@style/Theme.Design.Light.NoActionBar" android:configChanges="locale"></activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".Activity.RegisterActivity" android:theme="@style/Theme.Design.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Activity.RegisterActivity" android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".Activity.MainActivity" android:theme="@style/AppCustomStyle" android:configChanges="locale">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Activity.MainActivity" android:theme="@style/AppCustomStyle" android:configChanges="locale"></activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".SongActivity" android:parentActivityName=".Activity.MainActivity" android:label="@string/app_name" android:theme="@style/AppCustomStyle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".SongActivity" android:parentActivityName=".Activity.MainActivity" android:label="@string/app_name" android:theme="@style/AppCustomStyle"></activity>
 
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.moosamir.myapplicationkotlin.Activity.MainActivity" />
+        <activity android:name=".ArtistActivity" android:parentActivityName=".Activity.MainActivity" android:label="@string/app_name" android:theme="@style/AppCustomStyle"></activity>
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".AlbumActivity" android:parentActivityName=".Activity.MainActivity" android:label="@string/app_name" android:theme="@style/AppCustomStyle"></activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-
-        <activity android:name=".ArtistActivity" android:parentActivityName=".Activity.MainActivity" android:label="@string/app_name" android:theme="@style/AppCustomStyle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.moosamir.myapplicationkotlin.Activity.MainActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".AlbumActivity" android:parentActivityName=".Activity.MainActivity" android:label="@string/app_name" android:theme="@style/AppCustomStyle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.moosamir.myapplicationkotlin.Activity.MainActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

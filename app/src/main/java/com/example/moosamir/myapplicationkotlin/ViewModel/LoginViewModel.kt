@@ -1,6 +1,7 @@
 package com.example.moosamir.myapplicationkotlin.ViewModel
 
 import android.app.Activity
+import android.content.Context
 import android.content.res.Resources
 import android.hardware.usb.UsbRequest
 import com.example.moosamir.myapplicationkotlin.Interface.INTNetworkApi
@@ -33,6 +34,16 @@ public class LoginViewModel(delegate: LoginViewModelDelegate, activity:Activity)
         this.delegate = delegate
         this.activity = activity
     }
+
+    fun canShowMain(context: Context):Boolean{
+        val account = CacheManager(context).getAccount()
+        if(account == null){
+            return false
+        }else{
+            return true
+        }
+    }
+
     public fun setUsername(usernameP:String?){
         this.userNameL = usernameP
     }

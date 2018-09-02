@@ -28,9 +28,11 @@ class LoadingActivity : AppCompatActivity(), LoadingViewModelDelegate {
         if(this.viewModel.canShowMain(this)){
             val mainActivity = Intent(this, MainActivity::class.java)
             startActivity(mainActivity)
+            finish()
         }else{
             val loginActivity = Intent(this, LoginActivity::class.java)
             startActivity(loginActivity)
+            finish()
         }
     }
 

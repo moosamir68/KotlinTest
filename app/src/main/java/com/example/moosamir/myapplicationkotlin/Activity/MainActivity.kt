@@ -83,6 +83,8 @@ class MainActivity : AppCompatActivity(), ProfileFragmentDelegate {
     //MARK:- profile delegate
     override fun changeLanguageTo(newLang: String) {
         LocaleHelper.setLocale(this, newLang)
+        val mainActivity = Intent(this, MainActivity::class.java)
+        startActivity(mainActivity)
         this.finish()
     }
 
